@@ -1,6 +1,6 @@
 package com.uam.hotelreservaapp.data.model
 
-data class LoginRequest(
+data class AuthRequest(
     val correo: String,
     val password: String
 )
