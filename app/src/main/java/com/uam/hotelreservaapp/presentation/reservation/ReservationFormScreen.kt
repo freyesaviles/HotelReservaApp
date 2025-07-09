@@ -53,12 +53,12 @@ fun ReservationFormScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("Reserva") })
+            TopAppBar(title = { Text("Formulario de Reserva") })
         }
-    ) { padding ->
+    ) { paddingValues ->
         Column(
             modifier = Modifier
-                .padding(padding)
+                .padding(paddingValues)
                 .padding(24.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
@@ -72,15 +72,22 @@ fun ReservationFormScreen(
 
             OutlinedTextField(
                 value = personas,
-                onValueChange = { personas = it },
-                label = { Text("Cantidad de personas") }
+                onValueChange = { personas = it.filter { char -> char.isDigit() } },
+                label = { Text("Cantidad de personas") },
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth()
             )
 
             Spacer(modifier = Modifier.height(24.dp))
 
             Button(
                 onClick = {
-                    // Aquí puedes navegar al resumen o guardar los datos temporalmente en un ViewModel
+                    viewModel.guardarReservaTemporal(
+                        fechaInicio = fechaInicio,
+                        fechaFin = fechaFin,
+                        personas = personas.toIntOrNull() ?: 1,
+                        habitacionId = habitacionId
+                    )
                     navController.navigate(NavRoutes.Summary.route)
                 },
                 enabled = fechaInicio.isNotEmpty() && fechaFin.isNotEmpty() && personas.isNotEmpty()

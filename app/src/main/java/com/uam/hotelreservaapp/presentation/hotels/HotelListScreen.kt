@@ -1,5 +1,6 @@
 package com.uam.hotelreservaapp.presentation.hotels
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -36,20 +37,20 @@ fun HotelListScreen(viewModel: HotelsViewModel, navController: NavHostController
                 }
             )
         }
-    ) { padding ->
-        LazyColumn(modifier = Modifier
-            .padding(padding)
-            .padding(16.dp)) {
+    ) { paddingValues ->
+        LazyColumn(
+            modifier = Modifier
+                .padding(paddingValues)
+                .padding(16.dp)
+        ) {
             items(hotels) { hotel ->
-                HotelCard(onClick = {
-                    navController.navigate(NavRoutes.HotelDetail.createRoute(hotel.id))
-                })
+                HotelCard(
+                    hotel = hotel,
+                    onClick = {
+                        navController.navigate(NavRoutes.HotelDetail.createRoute(hotel.id))
+                    }
+                )
             }
         }
     }
-}
-
-@Composable
-fun HotelCard(onClick: () -> Unit) {
-    TODO("Not yet implemented")
 }

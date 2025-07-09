@@ -17,9 +17,13 @@ class MainActivity : ComponentActivity() {
 
         val dataStoreManager = DataStoreManager(applicationContext)
 
+        // Aquí inicializas RetrofitInstance con el dataStoreManager
+        com.uam.hotelreservaapp.data.remote.RetrofitInstance.dataStoreManager = dataStoreManager
+
         setContent {
             HotelReservaAppTheme {
                 val navController = rememberNavController()
+
                 val reservationViewModel = ReservationViewModel(dataStoreManager)
 
                 AppNavHost(

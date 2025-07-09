@@ -1,5 +1,6 @@
 package com.uam.hotelreservaapp.presentation.hotels
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -8,6 +9,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.uam.hotelreservaapp.data.local.DataStoreManager
 import com.uam.hotelreservaapp.data.model.Habitacion
 import com.uam.hotelreservaapp.presentation.navigation.NavRoutes
 import kotlinx.coroutines.flow.first
@@ -17,13 +19,12 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
-import retrofit2.http.Path
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HotelDetailScreen(
     hotelId: Int,
-    dataStoreManager: com.uam.hotelreservaapp.data.local.DataStoreManager,
+    dataStoreManager: DataStoreManager,
     navController: NavHostController
 ) {
     var habitaciones by remember { mutableStateOf(listOf<Habitacion>()) }
@@ -42,10 +43,10 @@ fun HotelDetailScreen(
         topBar = {
             TopAppBar(title = { Text("Habitaciones disponibles") })
         }
-    ) { padding ->
+    ) { paddingValues ->
         LazyColumn(
             modifier = Modifier
-                .padding(padding)
+                .padding(paddingValues)
                 .padding(16.dp)
         ) {
             items(habitaciones) { habitacion ->
@@ -65,8 +66,8 @@ fun HabitacionCard(habitacion: Habitacion, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp),
-        onClick = onClick
+            .padding(vertical = 8.dp)
+            .clickable { onClick() }
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text("Habitación ${habitacion.numero} - ${habitacion.tipo}", style = MaterialTheme.typography.titleMedium)
@@ -75,7 +76,7 @@ fun HabitacionCard(habitacion: Habitacion, onClick: () -> Unit) {
     }
 }
 
-// Retrofit personalizado con JWT
+// Retrofit personalizado para habitaciones con JWT
 fun createHabitacionApi(token: String): HabitacionApi {
     val authInterceptor = Interceptor { chain ->
         val request = chain.request().newBuilder()
@@ -100,5 +101,4 @@ fun createHabitacionApi(token: String): HabitacionApi {
 interface HabitacionApi {
     @GET("/api/habitaciones")
     suspend fun getAllHabitaciones(): List<Habitacion>
-    fun getHabitacionesByHotel(i: Int): List<Habitacion>
 }

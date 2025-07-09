@@ -12,14 +12,17 @@ import com.uam.hotelreservaapp.presentation.navigation.NavRoutes
 fun SummaryScreen(viewModel: ReservationViewModel, navController: NavHostController) {
     val reserva by viewModel.reserva.collectAsState()
 
-    reserva?.let {
-        Column(modifier = Modifier.padding(24.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+    reserva?.let { reservaActual ->
+        Column(
+            modifier = Modifier.padding(24.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
             Text("Resumen de Reserva", style = MaterialTheme.typography.headlineSmall)
 
-            Text("Fecha Inicio: ${it.fechaInicio}")
-            Text("Fecha Fin: ${it.fechaFin}")
-            Text("Personas: ${it.personas}")
-            Text("Habitación ID: ${it.habitacionId}")
+            Text("Fecha Inicio: ${reservaActual.fechaInicio}")
+            Text("Fecha Fin: ${reservaActual.fechaFin}")
+            Text("Personas: ${reservaActual.personas}")
+            Text("Habitación ID: ${reservaActual.habitacionId}")
 
             Button(onClick = {
                 viewModel.confirmarReserva(
@@ -28,13 +31,15 @@ fun SummaryScreen(viewModel: ReservationViewModel, navController: NavHostControl
                             popUpTo(NavRoutes.Summary.route) { inclusive = true }
                         }
                     },
-                    onError = { msg ->
-                        // Mostrar snackbar, log, etc.
+                    onError = { mensaje ->
+                        // Aquí puedes mostrar un Snackbar o alertar al usuario
+                        // Por simplicidad solo imprimimos el error
+                        println("Error al confirmar reserva: $mensaje")
                     }
                 )
             }) {
                 Text("Confirmar Reserva")
             }
         }
-    } ?: Text("No hay datos de reserva")
+    } ?: Text("No hay datos de reserva disponibles")
 }

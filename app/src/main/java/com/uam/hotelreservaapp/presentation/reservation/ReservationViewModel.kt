@@ -26,7 +26,7 @@ class ReservationViewModel(private val dataStoreManager: DataStoreManager) : Vie
             fechaFin = fechaFin,
             personas = personas,
             habitacionId = habitacionId,
-            usuarioId = 1 // ← temporal si no obtienes del token
+            usuarioId = 1 // Temporal: si tienes el id en token, reemplaza aquí
         )
     }
 
