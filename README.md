@@ -47,12 +47,6 @@ https://github.com/freyesaviles/hotelreserva
 
 ---
 
-## 📸 Capturas (opcional)
-
-Puedes agregar imágenes de las pantallas aquí si deseas.
-
----
-
 ## 📄 Licencia
 
 MIT
